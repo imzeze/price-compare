@@ -24,7 +24,7 @@ const ProductFilterButton = ({
   const clearFilter = useProductFilterStore((state) => state.clearFilter);
 
   return (
-    <div className="flex flex-col gap-col-2 rounded-2xl border border-neutral-200 p-3">
+    <div className="flex flex-col gap-col-2 rounded-2xl border bg-white border-neutral-200 p-3">
       <div
         className="flex items-center justify-between cursor-pointer"
         aria-expanded={isOpen}

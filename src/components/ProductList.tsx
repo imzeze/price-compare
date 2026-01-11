@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NaverShoppingItem } from "@/api/naverShopping";
 import ProductItems from "@/components/ProductItems";
-import ProductFilterButton from "@/components/ProductFilterButton";
 import useProductFilterStore from "@/state/useProductFilterStore";
+import ProductFilters from "@/components/ProductFilters";
 
 type ProductListProps = {
   items: NaverShoppingItem[];
@@ -29,48 +29,19 @@ function stripTags(value: string) {
 }
 
 const ProductList = ({ items }: ProductListProps) => {
-  const selectedFilters = useProductFilterStore(
-    (state) => state.selectedFilters
-  );
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedTerm, setDebouncedTerm] = useState("");
+  const { selectedFilters, searchKeyword } = useProductFilterStore();
+  const [debouncededKeyword, setDebouncedKeyword] = useState("");
   const [visibleCount, setVisibleCount] = useState(() =>
     Math.min(PAGE_SIZE, items.length)
   );
   const lastItemRef = useRef<HTMLDivElement | null>(null);
   const lastTriggeredCount = useRef(0);
 
-  const uniqueValues = useMemo(() => {
-    const uniqueMall = new Set<string>();
-    const uniqueBrand = new Set<string>();
-    const uniqueMaker = new Set<string>();
-
-    items.forEach((item) => {
-      if (item.mallName) uniqueMall.add(item.mallName);
-      if (item.brand) uniqueBrand.add(item.brand);
-      if (item.maker) uniqueMaker.add(item.maker);
-    });
-
-    return {
-      uniqueMall,
-      uniqueBrand,
-      uniqueMaker,
-    };
-  }, [items]);
-
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      setDebouncedTerm(searchTerm);
-    }, 300);
-
-    return () => window.clearTimeout(handle);
-  }, [searchTerm]);
-
   const filteredItems = useMemo(() => {
     const mallSet = new Set(selectedFilters.mall);
     const brandSet = new Set(selectedFilters.brand);
     const makerSet = new Set(selectedFilters.maker);
-    const keyword = debouncedTerm.trim().toLowerCase();
+    const keyword = debouncededKeyword.trim().toLowerCase();
 
     return items.filter((item) => {
       if (mallSet.size > 0 && !mallSet.has(item.mallName)) {
@@ -88,12 +59,20 @@ const ProductList = ({ items }: ProductListProps) => {
       }
       return true;
     });
-  }, [items, debouncedTerm, selectedFilters]);
+  }, [items, debouncededKeyword, selectedFilters]);
 
   const visibleItems = useMemo(
     () => filteredItems.slice(0, visibleCount),
     [filteredItems, visibleCount]
   );
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      setDebouncedKeyword(searchKeyword);
+    }, 300);
+
+    return () => window.clearTimeout(handle);
+  }, [searchKeyword]);
 
   useEffect(() => {
     setVisibleCount(Math.min(PAGE_SIZE, filteredItems.length));
@@ -134,50 +113,28 @@ const ProductList = ({ items }: ProductListProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <section className="flex flex-col gap-2 rounded-2xl border border-neutral-200 bg-white p-4">
-        <p className="text-base font-semibold text-neutral-950 break-keep">
-          상품명
-        </p>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-          placeholder="상품명을 입력하세요"
-          className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 break-keep"
-        />
-      </section>
-      <ProductFilterButton
-        title="쇼핑몰"
-        filterKey="mall"
-        items={uniqueValues.uniqueMall}
-      />
-      <ProductFilterButton
-        title="브랜드"
-        filterKey="brand"
-        items={uniqueValues.uniqueBrand}
-      />
-      <ProductFilterButton
-        title="제조사"
-        filterKey="maker"
-        items={uniqueValues.uniqueMaker}
-      />
-      {filteredItems.length === 0 ? (
-        <p className="text-sm text-neutral-500 break-keep">
-          선택한 쇼핑몰에 해당하는 상품이 없습니다.
-        </p>
-      ) : null}
-      {visibleItems.map((item, index) => {
-        const isLastVisible = index === visibleItems.length - 1;
-        return (
-          <div
-            key={`${item.productId}-${item.link}`}
-            ref={isLastVisible ? lastItemRef : undefined}
-          >
-            <ProductItems item={item} />
-          </div>
-        );
-      })}
+    <div className="flex gap-3">
+      <div className="sticky top-6 flex h-fit flex-1 flex-col gap-3">
+        <ProductFilters items={items} />
+      </div>
+      <div className="flex-2 flex flex-col gap-3">
+        {filteredItems.length === 0 ? (
+          <p className="text-sm text-neutral-500 break-keep">
+            선택한 쇼핑몰에 해당하는 상품이 없습니다.
+          </p>
+        ) : null}
+        {visibleItems.map((item, index) => {
+          const isLastVisible = index === visibleItems.length - 1;
+          return (
+            <div
+              key={`${item.productId}-${item.link}`}
+              ref={isLastVisible ? lastItemRef : undefined}
+            >
+              <ProductItems item={item} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -6,6 +6,8 @@ export type ProductFilterKey = "mall" | "brand" | "maker";
 
 type ProductFilterState = {
   selectedFilters: Record<ProductFilterKey, string[]>;
+  searchKeyword: string;
+  setSearchKeyword: (keyword: string) => void;
   clearFilter: (key: ProductFilterKey) => void;
   toggleFilter: (key: ProductFilterKey, value: string) => void;
 };
@@ -16,6 +18,8 @@ const useProductFilterStore = create<ProductFilterState>((set) => ({
     brand: [],
     maker: [],
   },
+  searchKeyword: "",
+  setSearchKeyword: (keyword) => set({ searchKeyword: keyword }),
   clearFilter: (key) =>
     set((state) => ({
       selectedFilters: {
