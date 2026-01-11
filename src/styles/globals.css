@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --color-darkblue-900: #0f172b;
+  --color-darkblue-800: #1d293d;
+  --color-darkblue-700: #314158;
+  --color-darkblue-500: #45556c;
+  --color-darkblue-300: #8a8d91;
+  --color-white-900: #ffffff;
+  --color-white-800: #f8fafc;
+  --color-red-900: #e7000b;
+  --color-red-700: #fb2c36;
+  --color-red-600: #ef4444;
+  --color-blue-700: #1447e6;
+  --color-blue-500: #155dfc;
+  --color-blue-400: #cad5e2;
+  --color-blue-300: #dbeafe;
+  --color-blue-100: #e2e8f0;
+  --color-purple-800: #5b5fff;
+  --color-purple-300: #e9e5ff;
+  --color-green-300: #dcfce7;
+  --color-green-900: #008236;
+  --color-yellow-300: #fef9c2;
+  --color-yellow-900: #a65f00;
+
+  --radius-card: 1rem;
+
+  --font-*: initial;
+  --font-sans: "Pretendard";
+
+  --size-4-8rem: clamp(4px, calc(0.0333 * 100vw - 8px), 8px);
+  --size-4-12rem: clamp(4px, calc(0.0667 * 100vw - 20px), 12px);
+  --size-8-12rem: clamp(8px, calc(0.0333 * 100vw - 4px), 12px);
+  --size-8-16rem: clamp(8px, calc(0.0667 * 100vw - 16px), 16px);
+  --size-12-16rem: clamp(12px, calc(0.0333 * 100vw + 0px), 16px);
+  --size-12-20rem: clamp(12px, calc(0.0667 * 100vw - 12px), 20px);
+  --size-16-20rem: clamp(16px, calc(0.0333 * 100vw + 4px), 20px);
+  --size-20-24rem: clamp(20px, calc(0.0333 * 100vw + 8px), 24px);
+  --size-20-28rem: clamp(20px, calc(0.0667 * 100vw - 4px), 28px);
+  --size-20-32rem: clamp(20px, calc(0.0667 * 100vw + 0px), 32px);
+  --size-20-40rem: clamp(20px, calc(0.0833 * 100vw - 4px), 40px);
+  --size-24-32rem: clamp(24px, calc(0.0667 * 100vw + 0px), 32px);
+  --size-24-36rem: clamp(24px, calc(0.1 * 100vw - 12px), 36px);
+  --size-28-32rem: clamp(28px, calc(0.0333 * 100vw + 16px), 32px);
+  --size-28-36rem: clamp(28px, calc(0.075 * 100vw + 1px), 36px);
+  --size-32-42rem: clamp(32px, calc(0.0833 * 100vw + 2px), 42px);
+  --size-36-48rem: clamp(36px, calc(0.1 * 100vw + 0px), 48px);
+  --size-40-54rem: clamp(40px, calc(0.1167 * 100vw - 2px), 54px);
+  --size-48-60rem: clamp(48px, calc(0.1 * 100vw + 8px), 60px);
+  --size-52-64rem: clamp(52px, calc(0.1 * 100vw + 12px), 64px);
+  --size-68-90rem: clamp(68px, calc(0.1833 * 100vw + 2px), 90px);
+
+  --text-sm: var(--size-12-16rem);
+  --text-sm--line-height: 1;
+  --text-base: var(--size-16-20rem);
+  --text-20-24: var(--size-20-24rem);
+  --text-28-32: var(--size-28-32rem);
+  --text-36-48: var(--size-36-48rem);
+
+  --height-20-24: var(--size-20-24rem);
+  --height-36-48: var(--size-36-48rem);
+  --height-40-54: var(--size-40-54rem);
+  --height-52-64: var(--size-52-64rem);
+
+  --width-20-24: var(--size-20-24rem);
+  --width-36-48: var(--size-36-48rem);
+  --width-40-54: var(--size-40-54rem);
+  --width-52-64: var(--size-52-64rem);
+
+  --spacing-20-24: var(--size-20-24rem);
+  --spacing-28-32: var(--size-28-32rem);
+  --spacing-36-48: var(--size-36-48rem);
+}
+
+html,
+body {
+  height: 100%;
+  line-height: 1.2;
+}
+
+body {
+  background: #ffffff;
+}
+
+button {
+  cursor: pointer;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
