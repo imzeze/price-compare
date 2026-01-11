@@ -1,25 +1,29 @@
 "use client";
 
-import { NaverProductCollectedData } from "@/api/naverShopping";
+import { NaverShoppingItem } from "@/api/naverShopping";
 import Image from "next/image";
 
-function stripTags(value: string) {
-  return value.replace(/<[^>]*>/g, "");
+function stripTags(value?: string) {
+  return value ? value.replace(/<[^>]*>/g, "") : "";
 }
 
 type ProductItemsProps = {
-  item: NaverProductCollectedData;
+  item: NaverShoppingItem;
 };
 
 const ProductItems = ({ item }: ProductItemsProps) => {
-  const title = item ? stripTags(item.title) : "데이터를 불러오지 못했습니다.";
-  const brand = item?.brand ? stripTags(item.brand) : "캐치티니핑";
+  const title = item.title
+    ? stripTags(item.title)
+    : "데이터를 불러오지 못했습니다.";
+  const mallName = item.mallName ? `쇼핑몰 ${stripTags(item.mallName)}` : "";
+  const brand = item.brand ? `브랜드 ${stripTags(item.brand)}` : "";
+  const maker = item.maker ? `제조사 ${stripTags(item.maker)}` : "";
   const price = item?.lprice
     ? `${Number(item.lprice).toLocaleString()}원`
     : "-";
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-2xl border border-neutral-800 bg-neutral-950 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
+    <div className="flex w-full flex-col gap-6 rounded-2xl border border-neutral-800 bg-neutral-950 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-4">
       <div className="rounded-xl bg-neutral-100 p-6">
         {item?.image ? (
           <Image
@@ -38,7 +42,7 @@ const ProductItems = ({ item }: ProductItemsProps) => {
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex flex-col gap-2">
           <p className="text-lg font-semibold text-neutral-200 break-keep">
-            {brand}
+            {[mallName, brand, maker].filter((value) => value).join(" | ")}
           </p>
           <h1 className="text-2xl font-bold text-neutral-50 break-keep">
             {title}

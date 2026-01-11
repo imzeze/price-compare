@@ -1,10 +1,10 @@
-import { NaverProductCollectedData } from "@/api/naverShopping";
+import { NaverShoppingItem } from "@/api/naverShopping";
 import ProductList from "@/components/ProductList";
 import fs from "fs/promises";
 import path from "path";
 
 type NaverProductPayload = {
-  items: NaverProductCollectedData[];
+  items: NaverShoppingItem[];
 };
 
 const DATA_PATH = path.resolve(process.cwd(), "data/naverProducts.json");
