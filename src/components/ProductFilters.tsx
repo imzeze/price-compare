@@ -1,37 +1,23 @@
 "use client";
 
-import { NaverShoppingItem } from "@/api/naverShopping";
 import ProductFilterButton from "@/components/ProductFilterButton";
 import useProductFilterStore from "@/state/useProductFilterStore";
-import { useMemo } from "react";
 
 interface ProductFiltersProps {
-  items: NaverShoppingItem[];
+  uniqueMall: string[];
+  uniqueBrand: string[];
+  uniqueMaker: string[];
 }
 
-const ProductFilters = ({ items }: ProductFiltersProps) => {
+const ProductFilters = ({
+  uniqueMall,
+  uniqueBrand,
+  uniqueMaker,
+}: ProductFiltersProps) => {
   const searchKeyword = useProductFilterStore((state) => state.searchKeyword);
   const setSearchKeyword = useProductFilterStore(
     (state) => state.setSearchKeyword
   );
-
-  const uniqueValues = useMemo(() => {
-    const uniqueMall = new Set<string>();
-    const uniqueBrand = new Set<string>();
-    const uniqueMaker = new Set<string>();
-
-    items.forEach((item) => {
-      if (item.mallName) uniqueMall.add(item.mallName);
-      if (item.brand) uniqueBrand.add(item.brand);
-      if (item.maker) uniqueMaker.add(item.maker);
-    });
-
-    return {
-      uniqueMall,
-      uniqueBrand,
-      uniqueMaker,
-    };
-  }, [items]);
 
   return (
     <>
@@ -50,17 +36,17 @@ const ProductFilters = ({ items }: ProductFiltersProps) => {
       <ProductFilterButton
         title="쇼핑몰"
         filterKey="mall"
-        items={uniqueValues.uniqueMall}
+        items={uniqueMall}
       />
       <ProductFilterButton
         title="브랜드"
         filterKey="brand"
-        items={uniqueValues.uniqueBrand}
+        items={uniqueBrand}
       />
       <ProductFilterButton
         title="제조사"
         filterKey="maker"
-        items={uniqueValues.uniqueMaker}
+        items={uniqueMaker}
       />
     </>
   );

@@ -8,7 +8,7 @@ import useProductFilterStore, {
 interface ProductFilterButtonProps {
   title: string;
   filterKey: ProductFilterKey;
-  items: Set<string>;
+  items: string[];
 }
 
 const ProductFilterButton = ({
@@ -60,7 +60,7 @@ const ProductFilterButton = ({
           >
             전체
           </button>
-          {[...items].map((mall) => {
+        {items.map((mall) => {
             const isActive = selectedValues.includes(mall);
             return (
               <button

@@ -8,6 +8,11 @@ import ProductFilters from "@/components/ProductFilters";
 
 type ProductListProps = {
   items: NaverShoppingItem[];
+  uniqueValues: {
+    uniqueMall: string[];
+    uniqueBrand: string[];
+    uniqueMaker: string[];
+  };
 };
 
 const PAGE_SIZE = 10;
@@ -28,9 +33,9 @@ function stripTags(value: string) {
   return value.replace(/<[^>]*>/g, "");
 }
 
-const ProductList = ({ items }: ProductListProps) => {
+const ProductList = ({ items, uniqueValues }: ProductListProps) => {
   const { selectedFilters, searchKeyword } = useProductFilterStore();
-  const [debouncededKeyword, setDebouncedKeyword] = useState("");
+  const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const [visibleCount, setVisibleCount] = useState(() =>
     Math.min(PAGE_SIZE, items.length)
   );
@@ -41,7 +46,7 @@ const ProductList = ({ items }: ProductListProps) => {
     const mallSet = new Set(selectedFilters.mall);
     const brandSet = new Set(selectedFilters.brand);
     const makerSet = new Set(selectedFilters.maker);
-    const keyword = debouncededKeyword.trim().toLowerCase();
+    const keyword = debouncedKeyword.trim().toLowerCase();
 
     return items.filter((item) => {
       if (mallSet.size > 0 && !mallSet.has(item.mallName)) {
@@ -59,7 +64,7 @@ const ProductList = ({ items }: ProductListProps) => {
       }
       return true;
     });
-  }, [items, debouncededKeyword, selectedFilters]);
+  }, [items, debouncedKeyword, selectedFilters]);
 
   const visibleItems = useMemo(
     () => filteredItems.slice(0, visibleCount),
@@ -115,7 +120,11 @@ const ProductList = ({ items }: ProductListProps) => {
   return (
     <div className="flex gap-3">
       <div className="sticky top-6 flex h-fit flex-1 flex-col gap-3">
-        <ProductFilters items={items} />
+      <ProductFilters
+        uniqueMall={uniqueValues.uniqueMall}
+        uniqueBrand={uniqueValues.uniqueBrand}
+        uniqueMaker={uniqueValues.uniqueMaker}
+      />
       </div>
       <div className="flex-2 flex flex-col gap-3">
         {filteredItems.length === 0 ? (
