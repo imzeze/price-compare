@@ -2,22 +2,25 @@ import httpClient from "./httpClient";
 
 const NAVER_BASE_URL = "https://openapi.naver.com/v1/search";
 
-type NaverShoppingItem = {
+export type NaverProductCollectedData = {
   title: string;
   link: string;
   image: string;
   lprice: string;
-  hprice: string;
   mallName: string;
   productId: string;
-  productType: string;
   brand: string;
+};
+
+type NaverShoppingItem = {
+  hprice: string;
+  productType: string;
   maker: string;
   category1: string;
   category2: string;
   category3: string;
   category4: string;
-};
+} & NaverProductCollectedData;
 
 type NaverShoppingResponse = {
   lastBuildDate: string;
